@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Virus Slot Machine</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="stage">
+    <header>
+      <h1 data-ui="title">Virus-Slot-Machine</h1>
+      <p class="subtitle" data-ui="subtitle"></p>
+    </header>
+
+    <main class="machine">
+      <div class="reel-labels" id="reel-labels"></div>
+      <div class="reels" id="reels">
+        <div class="payline" aria-hidden="true"></div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="prompt" data-ui="prompt"></p>
+    </footer>
+
+    <div class="lang-hint" data-ui="langHint"></div>
+
+    <section class="result" id="result" aria-live="polite">
+      <h2 class="result-headline" id="result-headline"></h2>
+      <p class="result-virus" id="result-virus"></p>
+      <div class="result-tiles" id="result-tiles"></div>
+      <p class="result-text" id="result-text"></p>
+      <p class="result-again" data-ui="againHint"></p>
+    </section>
+
+    <div class="error" id="error" hidden></div>
+  </div>
+
+  <script src="js/outcome.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/reels.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

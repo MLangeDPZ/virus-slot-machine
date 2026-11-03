@@ -1,0 +1,339 @@
+/* House font: drop TheSansB as fonts/TheSansB.woff2 (and -Bold) – system font is used until then. */
+@font-face {
+  font-family: "TheSansB";
+  src: url("../fonts/TheSansB.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "TheSansB";
+  src: url("../fonts/TheSansB-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --cell: 260px;          /* must match CELL in js/reels.js */
+  --reel-w: 280px;
+  --gap: 30px;
+
+  --bg: #0d1420;
+  --panel: #18253a;
+  --reel-bg: #f4f1e8;
+  --ink: #1a2233;
+  --text: #f2f5fa;
+  --muted: #9fb0c8;
+  --accent: #ffcc33;
+  --spill: #ff4d6d;
+  --near: #ffb020;
+  --miss: #5fa8d3;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* Fixed 1080x1920 stage, scaled to fit by main.js */
+#stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1080px;
+  height: 1920px;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "TheSansB", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+header {
+  margin-top: 150px;
+  padding: 0 80px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 104px;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--accent);
+}
+
+.subtitle {
+  margin: 28px 0 0;
+  font-size: 44px;
+  line-height: 1.3;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+/* ---------- Machine & reels ---------- */
+
+.machine {
+  margin-top: 110px;
+  padding: 40px 40px 50px;
+  background: var(--panel);
+  border-radius: 48px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.reel-labels {
+  display: flex;
+  gap: var(--gap);
+  margin-bottom: 24px;
+}
+
+.reel-label {
+  width: var(--reel-w);
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.reels {
+  position: relative;
+  display: flex;
+  gap: var(--gap);
+}
+
+.reel-window {
+  position: relative;
+  width: var(--reel-w);
+  height: calc(var(--cell) * 3);
+  overflow: hidden;
+  background: var(--reel-bg);
+  border-radius: 24px;
+}
+
+/* fade the rows above and below the payline */
+.reel-window::before,
+.reel-window::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--cell) * 0.9);
+  z-index: 2;
+  pointer-events: none;
+}
+.reel-window::before { top: 0;    background: linear-gradient(var(--panel), rgba(24, 37, 58, 0)); }
+.reel-window::after  { bottom: 0; background: linear-gradient(rgba(24, 37, 58, 0), var(--panel)); }
+
+.strip { will-change: transform; }
+
+.cell {
+  height: var(--cell);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+}
+
+.cell-icon {
+  font-size: 140px;
+  line-height: 1;
+}
+
+.cell-label {
+  margin-top: 14px;
+  padding: 0 14px;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.payline {
+  position: absolute;
+  left: -16px;
+  right: -16px;
+  top: var(--cell);
+  height: var(--cell);
+  border: 6px solid var(--accent);
+  border-radius: 30px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  margin-top: auto;
+  margin-bottom: 170px;
+  padding: 0 80px;
+  text-align: center;
+}
+
+.prompt {
+  margin: 0;
+  font-size: 60px;
+  font-weight: 700;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+#stage.is-spinning .prompt {
+  animation: none;
+  opacity: 0.35;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.97); }
+}
+
+.lang-hint {
+  position: absolute;
+  right: 60px;
+  bottom: 50px;
+  font-size: 28px;
+  color: var(--muted);
+}
+
+/* ---------- Result screen ---------- */
+
+.result {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 80px;
+  background: rgba(13, 20, 32, 0.96);
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.result.show {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease;
+}
+
+.result-headline {
+  margin: 0;
+  font-size: 128px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.result.type-spillover .result-headline { color: var(--spill); }
+.result.type-nearMiss  .result-headline { color: var(--near); }
+.result.type-miss      .result-headline { color: var(--miss); }
+
+.result-virus {
+  margin: 36px 0 0;
+  min-height: 80px;
+  font-size: 72px;
+  font-weight: 700;
+}
+
+.result-tiles {
+  display: flex;
+  gap: 30px;
+  margin-top: 60px;
+}
+
+.tile {
+  width: 280px;
+  padding: 30px 16px 34px;
+  box-sizing: border-box;
+  background: var(--reel-bg);
+  color: var(--ink);
+  border-radius: 28px;
+  border: 6px solid transparent;
+}
+
+.result.animate .tile {
+  animation: pop 0.45s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.result.animate .tile:nth-child(2) { animation-delay: 0.12s; }
+.result.animate .tile:nth-child(3) { animation-delay: 0.24s; }
+
+.result.type-spillover .tile { border-color: var(--spill); }
+
+.tile.off {
+  opacity: 0.5;
+  border: 6px dashed var(--near);
+}
+
+.tile-reel {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.tile-icon {
+  margin-top: 16px;
+  font-size: 130px;
+  line-height: 1;
+}
+
+.tile-label {
+  margin-top: 16px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.result-text {
+  max-width: 900px;
+  margin: 60px 0 0;
+  font-size: 46px;
+  line-height: 1.35;
+}
+
+.result-again {
+  position: absolute;
+  bottom: 170px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--muted);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- Error ---------- */
+
+.error {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 100px;
+  background: var(--bg);
+  font-size: 44px;
+  line-height: 1.4;
+  text-align: center;
+}
+.error[hidden] { display: none; }

@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "version": "0.1",
+    "status": "Entwurf – fachliche Prüfung durch die Forschenden ausstehend"
+  },
+
+  "languages": ["de", "en"],
+
+  "settings": {
+    "defaultLanguage": "de",
+    "weights": { "spillover": 0.40, "nearMiss": 0.35, "miss": 0.25 },
+    "nearMissLastReelBias": 0.6,
+    "firstStopMs": 1600,
+    "staggerMs": 650,
+    "nearMissExtraMs": 1400,
+    "resultDelayMs": 600,
+    "resultSeconds": 20,
+    "inputCooldownMs": 400
+  },
+
+  "ui": {
+    "title":             { "de": "Virus-Slot-Machine", "en": "Virus Slot Machine" },
+    "subtitle":          { "de": "Springt das Virus vom Tier auf den Menschen über?", "en": "Will the virus jump from animals to humans?" },
+    "prompt":            { "de": "Zieh am Hebel!", "en": "Pull the lever!" },
+    "langHint":          { "de": "L · English", "en": "L · Deutsch" },
+    "spilloverHeadline": { "de": "Spillover!", "en": "Spillover!" },
+    "nearMissHeadline":  { "de": "Fast!", "en": "So close!" },
+    "missHeadline":      { "de": "Niete", "en": "No luck" },
+    "nearMissVirus":     { "de": "Beinahe: {virus}", "en": "Almost: {virus}" },
+    "againHint":         { "de": "Hebel ziehen für eine neue Runde", "en": "Pull the lever for a new round" },
+    "loadError":         { "de": "content.json konnte nicht geladen werden. Bitte über einen lokalen Webserver starten (siehe README).", "en": "Could not load content.json. Please run via a local web server (see README)." }
+  },
+
+  "reelOrder": ["host", "symptom", "transmission"],
+
+  "reels": {
+    "host": {
+      "label": { "de": "Wirt", "en": "Host" },
+      "symbols": [
+        { "id": "chimpanzee", "icon": "🦍", "label": { "de": "Schimpanse", "en": "Chimpanzee" } },
+        { "id": "macaque",    "icon": "🐒", "label": { "de": "Makake", "en": "Macaque" } },
+        { "id": "bat",        "icon": "🦇", "label": { "de": "Fledermaus", "en": "Bat" } },
+        { "id": "flyingfox",  "icon": "🦇", "label": { "de": "Flughund", "en": "Fruit bat" } },
+        { "id": "dromedary",  "icon": "🐪", "label": { "de": "Dromedar", "en": "Dromedary" } },
+        { "id": "bird",       "icon": "🐦", "label": { "de": "Vogel", "en": "Bird" } },
+        { "id": "rodent",     "icon": "🐭", "label": { "de": "Nagetier", "en": "Rodent" } },
+        { "id": "dog",        "icon": "🐕", "label": { "de": "Hund", "en": "Dog" } }
+      ]
+    },
+    "symptom": {
+      "label": { "de": "Symptome", "en": "Symptoms" },
+      "symbols": [
+        { "id": "respiratory",  "icon": "🫁", "label": { "de": "Atemwege", "en": "Airways" } },
+        { "id": "fever",        "icon": "🤒", "label": { "de": "Fieber", "en": "Fever" } },
+        { "id": "neurological", "icon": "🧠", "label": { "de": "Neurologisch", "en": "Neurological" } },
+        { "id": "hemorrhagic",  "icon": "🩸", "label": { "de": "Hämorrhagisch", "en": "Haemorrhagic" } },
+        { "id": "immune",       "icon": "🛡️", "label": { "de": "Immunschwäche", "en": "Immune deficiency" } },
+        { "id": "kidney",       "icon": "🫘", "label": { "de": "Niere", "en": "Kidney" } }
+      ]
+    },
+    "transmission": {
+      "label": { "de": "Übertragung", "en": "Transmission" },
+      "symbols": [
+        { "id": "droplets",   "icon": "💨", "label": { "de": "Tröpfchen/Aerosole", "en": "Droplets/aerosols" } },
+        { "id": "bite",       "icon": "🦷", "label": { "de": "Biss/Kratzer", "en": "Bite/scratch" } },
+        { "id": "bodyfluids", "icon": "💧", "label": { "de": "Körperflüssigkeiten", "en": "Body fluids" } },
+        { "id": "mosquito",   "icon": "🦟", "label": { "de": "Mückenstich", "en": "Mosquito bite" } },
+        { "id": "tick",       "icon": "🕷️", "label": { "de": "Zeckenstich", "en": "Tick bite" } },
+        { "id": "dust",       "icon": "🌫️", "label": { "de": "Staub", "en": "Dust" } }
+      ]
+    }
+  },
+
+  "spillovers": [
+    {
+      "id": "hiv", "host": "chimpanzee", "symptom": "immune", "transmission": "bodyfluids",
+      "name": { "de": "HIV (aus SIV)", "en": "HIV (from SIV)" },
+      "evolution": {
+        "de": "HIV entstand aus einem Affenvirus (SIV), das sich an den Menschen angepasst hat.",
+        "en": "HIV arose from a monkey virus (SIV) that adapted to humans."
+      },
+      "reviewNote": "Gameplan: Übertragung „Blut/Körperflüssigkeiten“ → Symbol bodyfluids.",
+      "image": null, "sources": []
+    },
+    {
+      "id": "herpesb", "host": "macaque", "symptom": "neurological", "transmission": "bite",
+      "name": { "de": "Herpes-B-Virus", "en": "Herpes B virus" },
+      "evolution": {
+        "de": "Für Makaken ist das Virus meist harmlos – erst im Menschen, einem fremden Wirt, wird es lebensgefährlich.",
+        "en": "In macaques the virus is mostly harmless – only in humans, an unfamiliar host, does it become life-threatening."
+      },
+      "image": null, "sources": []
+    },
+    {
+      "id": "sarscov2", "host": "bat", "symptom": "respiratory", "transmission": "droplets",
+      "name": { "de": "SARS-CoV-2", "en": "SARS-CoV-2" },
+      "evolution": {
+        "de": "Vermutlich aus Fledermaus-Coronaviren hervorgegangen, passte sich SARS-CoV-2 an den Menschen an – und bildet bis heute neue Varianten.",
+        "en": "Probably descended from bat coronaviruses, SARS-CoV-2 adapted to humans – and keeps producing new variants."
+      },
+      "image": null, "sources": []
+    },
+    {
+      "id": "mers", "host": "dromedary", "symptom": "respiratory", "transmission": "droplets",
+      "name": { "de": "MERS-CoV", "en": "MERS-CoV" },
+      "evolution": {
+        "de": "Das Coronavirus zirkuliert in Dromedaren, oft ohne sie krank zu machen – enger Kontakt reicht für den Sprung zum Menschen.",
+        "en": "The coronavirus circulates in dromedaries, often without making them ill – close contact is enough to jump to humans."
+      },
+      "reviewNote": "Gameplan: „enger Kontakt/Tröpfchen“ → Symbol droplets (kein eigenes Kontakt-Symbol).",
+      "image": null, "sources": []
+    },
+    {
+      "id": "h5n1", "host": "bird", "symptom": "respiratory", "transmission": "droplets",
+      "name": { "de": "Vogelgrippe H5N1", "en": "Avian flu H5N1" },
+      "evolution": {
+        "de": "Vogelgrippeviren verändern sich ständig und tauschen Gene aus – jede neue Variante könnte besser zum Menschen passen.",
+        "en": "Avian flu viruses constantly change and swap genes – any new variant could fit humans better."
+      },
+      "reviewNote": "Gameplan: Symptome „Atemwege/Fieber“ → respiratory; Übertragung „Kontakt/Tröpfchen“ → droplets.",
+      "image": null, "sources": []
+    },
+    {
+      "id": "westnile", "host": "bird", "symptom": "fever", "transmission": "mosquito",
+      "name": { "de": "West-Nil-Virus", "en": "West Nile virus" },
+      "evolution": {
+        "de": "Mücken tragen das Virus von Vogel zu Vogel – der Mensch ist für das Virus eine Sackgasse.",
+        "en": "Mosquitoes carry the virus from bird to bird – for the virus, humans are a dead end."
+      },
+      "reviewNote": "Gameplan: „Fieber, selten Hirnhautentzündung“ → fever.",
+      "image": null, "sources": []
+    },
+    {
+      "id": "puumala", "host": "rodent", "symptom": "kidney", "transmission": "dust",
+      "name": { "de": "Hantavirus (Puumala)", "en": "Hantavirus (Puumala)" },
+      "evolution": {
+        "de": "Rötelmäuse tragen das Virus, ohne zu erkranken – Wirt und Virus haben sich über lange Zeit aneinander angepasst.",
+        "en": "Bank voles carry the virus without falling ill – host and virus have adapted to each other over a long time."
+      },
+      "reviewNote": "Gameplan: Wirt „Nagetier (Rötelmaus)“, Symptome „Fieber/Niere“ → kidney.",
+      "image": null, "sources": []
+    },
+    {
+      "id": "tbe", "host": "rodent", "symptom": "neurological", "transmission": "tick",
+      "name": { "de": "FSME-Virus", "en": "TBE virus" },
+      "evolution": {
+        "de": "Das Virus pendelt zwischen Zecken und kleinen Nagetieren – der Mensch ist nur ein zufälliger Fehlwirt.",
+        "en": "The virus cycles between ticks and small rodents – humans are just an accidental dead-end host."
+      },
+      "reviewNote": "Gameplan: „Fieber/Hirnhautentzündung“ → neurological (fever wäre auch möglich).",
+      "image": null, "sources": []
+    },
+    {
+      "id": "rabies", "host": "dog", "symptom": "neurological", "transmission": "bite",
+      "name": { "de": "Tollwutvirus", "en": "Rabies virus" },
+      "evolution": {
+        "de": "Das Virus wandert über Nerven ins Gehirn und macht seinen Wirt bissig – so sorgt es selbst für seine Verbreitung.",
+        "en": "The virus travels along nerves to the brain and makes its host bite – ensuring its own spread."
+      },
+      "image": null, "sources": []
+    },
+    {
+      "id": "ebola", "host": "flyingfox", "symptom": "hemorrhagic", "transmission": "bodyfluids",
+      "name": { "de": "Ebolavirus", "en": "Ebola virus" },
+      "evolution": {
+        "de": "Flughunde gelten als natürliches Reservoir – über Körperflüssigkeiten infizierter Tiere gelangt das Virus zum Menschen.",
+        "en": "Fruit bats are considered the natural reservoir – the virus reaches humans through body fluids of infected animals."
+      },
+      "reviewNote": "Gameplan: „Marburg- oder Ebolavirus“ – Auswahl offen.",
+      "image": null, "sources": []
+    }
+  ],
+
+  "nearMiss": {
+    "comment": "Platzhalter: {virus} = Name des knapp verpassten Virus, {correct} = richtiges Symbol der abweichenden Walze.",
+    "byReel": {
+      "host": {
+        "de": [
+          "Symptome und Übertragung passen zu {virus} – der Wirt wäre aber: {correct}.",
+          "{virus} braucht ein anderes Tier: {correct}."
+        ],
+        "en": [
+          "Symptoms and transmission fit {virus} – but its host is: {correct}.",
+          "{virus} needs a different animal: {correct}."
+        ]
+      },
+      "symptom": {
+        "de": [
+          "Wirt und Übertragung passen zu {virus} – typisch wäre aber: {correct}.",
+          "Tier und Weg stimmen, aber {virus} macht anders krank: {correct}."
+        ],
+        "en": [
+          "Host and transmission fit {virus} – but typical would be: {correct}.",
+          "Animal and route are right, but {virus} causes a different illness: {correct}."
+        ]
+      },
+      "transmission": {
+        "de": [
+          "Wirt und Symptome passen zu {virus} – übertragen wird es aber so: {correct}.",
+          "{virus} hätte einen anderen Weg gebraucht: {correct}."
+        ],
+        "en": [
+          "Host and symptoms fit {virus} – but it spreads like this: {correct}.",
+          "{virus} would have needed a different route: {correct}."
+        ]
+      }
+    }
+  },
+
+  "miss": {
+    "texts": {
+      "de": [
+        "Niete! Dieses Virus bleibt lieber zu Hause in seinem Tier.",
+        "Schlüssel passt nicht ins Schloss: Das Virus findet an unseren Zellen keinen Andockpunkt.",
+        "Zum Glück für uns – die allermeisten Tierviren schaffen den Sprung zum Menschen nie.",
+        "Diese Kombination gibt es in der Natur nicht. Die Evolution war hier wählerischer."
+      ],
+      "en": [
+        "No luck! This virus prefers to stay at home in its animal.",
+        "Wrong key for the lock: the virus finds nowhere to dock on our cells.",
+        "Lucky for us – the vast majority of animal viruses never make the jump to humans.",
+        "This combination doesn't exist in nature. Evolution was pickier here."
+      ]
+    }
+  }
+}
