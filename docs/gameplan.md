@@ -1,5 +1,18 @@
-Virus Slot Machine – Gameplan v0.1
-Stand: 28.10.2026 · DPZ-Jubiläumsausstellung 2027 (Oberthema Evolution), Themenblock Infektionsforschung
+Virus Slot Machine – Gameplan v0.2
+Stand: 03.11.2026 · DPZ-Jubiläumsausstellung 2027 (Oberthema Evolution), Themenblock Infektionsforschung
+0. Aktueller Status (03.11.2026)
+Setup erledigt: VS Code + Git + Claude-Code-Erweiterung auf dem Mac, GitHub-Account angelegt.
+Projektordner: ~/Projects/virus-slot-machine (Git-Repo), Gameplan liegt unter docs/gameplan.md.
+Erster Prototyp läuft: Hochkant-Layout, 3 Walzen (Tier · Symptome · Übertragung), Spin per Mausklick + Leertaste, gewichtete Ergebnislogik (40/35/25), einfacher Ergebnisscreen, Inhalte DE/EN in content.json, Sprachwechsel per Taste L, Emoji-Platzhalter, Web-Audio-Sounds.
+Online: GitHub-Repo (öffentlich) + GitHub Pages aktiv (https://<username>.github.io/virus-slot-machine/).
+Lokale Vorschau: im Projektordner python3 -m http.server 8000 → http://localhost:8000 (Doppelklick auf index.html funktioniert nicht, da JSON geladen wird).
+Noch nicht gebaut: Mutation, Virendex, Attract-Modus, Auto-Reset, Slot-Automaten-Look, echte Icons/Bilder, Credits/Fußleiste.
+0.1 Arbeitsweise
+Claude Code = Werkstatt: alle Änderungen am Code/an content.json. Eine Aufgabe pro Prompt → im Browser testen → committen → pushen (Sync Changes).
+Claude-Chat (Projekt) = Planungsbüro: Konzept, Entscheidungen, Inhalte/Texte, Abstimmung mit Forschenden, Prompts für Claude Code.
+Brücke: docs/gameplan.md. Bei Änderungen hier Gameplan aktualisieren → in docs/gameplan.md einfügen → Claude Code Bescheid geben.
+CLAUDE.md im Projekt-Root mit festen Regeln (offline, keine CDNs, DE/EN in content.json, Hochkant 1080×1920, keine lizenzierten Dateien im Repo).
+Repo ist öffentlich → niemals einchecken: TheSansB-Fontdateien, Adobe-Stock-Bilder, unveröffentlichtes Material aus der DPZ-Mediendatenbank. Lösung (offen): Dateien lokal halten und per .gitignore ausschließen, mit Fallback-Schrift für die Online-Version.
 1. Projektrahmen & Entscheidungen
 Vorgehen: Prototyp bauen → fachliche Abstimmung mit den Forschenden → überarbeitete Version an die Agentur (die bereits das Zahlenmerkspiel-Exponat gebaut hat). Die Agentur soll nur noch Case + Hebelmechanik bauen → Prototyp muss optisch schon nah am Endprodukt sein (Kosten niedrig halten).
 Zielgruppe: Göttinger Bürger:innen mit Wissenschaftsinteresse, Studierende, Schüler:innen/Schulklassen ab 15.
@@ -7,11 +20,11 @@ Freigabe: Slot-Machine-Idee kam von den Forschenden, vom Kommunikations-Team-Lea
 Format: Hochkant (Portrait), so nah wie möglich an einem echten Slot-Automaten.
 Eingabe: Prototyp per Mausklick UND Tastatur (Leertaste) startbar. Ziel fürs Exponat: möglichst kein Touchscreen (günstiger) → Hebel als einzige (bzw. Haupt-)Eingabe.
 Sprachen: Deutsch + Englisch, schon im Prototyp.
-Hausschrift: TheSansB (wird bereits im Zahlenmerkspiel-Exponat verwendet; als lokale WOFF2-Datei einbinden).
+Hausschrift: TheSansB (wird bereits im Zahlenmerkspiel-Exponat verwendet; als lokale WOFF2-Datei einbinden, nicht im öffentlichen Repo).
 IT: GitHub-Nutzung von der DPZ-IT freigegeben.
-Entwicklungsrechner: Mac, VS Code (noch zu installieren) + Claude Code.
+Entwicklungsrechner: Mac, VS Code + Claude Code.
 2. Technische Architektur
-Reine Frontend-Webapp (HTML/CSS/JavaScript), kein Backend.
+Reine Frontend-Webapp (HTML/CSS/JavaScript), kein Backend, keine Build-Tools.
 Offline-first: keine CDNs, keine externen Fonts/APIs; alle Schriften, Bilder, Sounds lokal im Projekt. Optional PWA/Service Worker.
 Inhalte in separater JSON-Datei (Tiere, Symptome, Übertragungswege, Viren, Texte DE/EN, Quellenangaben) → fachlich prüfbar ohne Code-Eingriff.
 Hosting Prototyp: GitHub Pages (Link an Forschende).
@@ -69,25 +82,25 @@ Per Code: Walzenrotation mit Bewegungsunschärfe und Nachfedern, Lauflichter, Gl
 Bilder nötig: Walzensymbole als einheitlich illustrierte Icons (z. B. Vektor-Set Adobe Stock); Fotos (Viren aus DPZ-Mediendatenbank, ggf. Adobe Stock) eher auf dem Ergebnisscreen. Automatenrahmen auf dem Screen nur bei Variante ohne physisches Case.
 Virus-Theming: Walzenrahmen als Virushülle mit Spikes (Bezug zum begehbaren Coronavirus-Modell), Lichter als Viruspartikel, „Labor-Neon“-Farbschema.
 8. Sound
-Prototyp: Slot-Sounds per Web Audio API synthetisieren (keine Lizenzfragen).
+Prototyp: Slot-Sounds per Web Audio API synthetisieren (keine Lizenzfragen). ✔ im ersten Prototyp umgesetzt.
 Später ggf. austauschen: Freesound.org (Filter CC0), Pixabay Sounds.
 9. Credits, Logos, Lizenzen
 Bildquellen klein in der Bildecke.
 Sound-/Gesamtcredits als kleines „©“-Overlay (schließt automatisch, man verlässt nie das Spiel) bzw. ohne Touch in der Attract-Rotation.
 DPZ-Logo + „Gefördert durch die Deutsche Forschungsgemeinschaft (DFG)“ gut sichtbar, Vorschlag: feste schmale Fußleiste auf allen Screens. DFG-Vorgaben zum Förderhinweis prüfen.
-TheSansB: Lizenz für Exponat-/Web-Einbettung über Zahlenmerkspiel bereits gegeben – Font-Dateien (WOFF2) besorgen.
-Adobe Stock Standardlizenz für Ausstellungsdisplay voraussichtlich ausreichend – kurz gegenprüfen.
+TheSansB: Lizenz für Exponat-/Web-Einbettung über Zahlenmerkspiel bereits gegeben – Font-Dateien (WOFF2) besorgen. Nicht ins öffentliche Repo (siehe 0.1).
+Adobe Stock Standardlizenz für Ausstellungsdisplay voraussichtlich ausreichend – kurz gegenprüfen. Ebenfalls nicht ins öffentliche Repo.
 10. Offene Punkte
 Bildschirmgröße (Hochkant ist gesetzt).
 Endgültige Bedienung: nur Hebel vs. Hebel + Knopf (siehe Abschnitt 4).
 Fachliche Prüfung der 10 Kombinationen + Beinahe-Treffer-/Nieten-Texte durch Forschende.
 Bildauswahl (Mediendatenbank / Adobe Stock), Icon-Stil.
-11. Nächste Schritte (29.10.)
-VS Code Setup auf dem Mac:
-VS Code installieren (code.visualstudio.com)
-Git: im Terminal xcode-select --install (installiert Git mit) oder über git-scm.com
-GitHub-Account (ggf. DPZ-Organisation)
-Claude-Code-Erweiterung in VS Code installieren, mit Claude-Konto anmelden
-ggf. Admin-Rechte am Dienstrechner prüfen
-Repository + Projektstruktur in Claude Code anlegen.
-Erster Prototyp: Hochkant-Layout, 3 Walzen, Spin per Mausklick + Leertaste, Platzhalter-Icons, Content-JSON mit den 10 Kombinationen, DE/EN.
+Umgang mit lizenzierten Dateien (Font, Bilder) bei öffentlichem Repo: lokal + .gitignore + Fallback online?
+11. Nächste Schritte
+CLAUDE.md anlegen lassen (Prompt siehe unten).
+Mutations-Mechanik (Abschnitt 3.4 + 4): zustandsabhängiger Hebel, max. 1–2 Mutationen pro Runde, Ergebnis wird neu bewertet. Prototyp so bauen, dass auch Variante „zweiter Knopf“ (z. B. Taste M) testbar ist.
+Attract-Modus + Auto-Reset (60 s Inaktivität), Hinweis „Zieh am Hebel!“ DE/EN.
+Feinschliff: Virendex, Slot-Automaten-Look, Credits/Fußleiste.
+Danach: Link an Forschende zur fachlichen Prüfung.
+Prompt für CLAUDE.md:
+Read docs/gameplan.md and create a CLAUDE.md in the project root with the standing rules for this project: plain HTML/CSS/JS without build tools, offline only (no CDNs, external fonts or APIs), all texts DE/EN in content.json, portrait 1080x1920 scaled to fit, input abstraction via one "spin" action (click/space = lever), never commit licensed files (TheSansB fonts, Adobe Stock, DPZ media), docs/gameplan.md is the concept reference. Keep it short.
