@@ -3,44 +3,126 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Virus Slot Machine</title>
+  <title></title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- All visible text comes from content.json (see js/main.js). -->
+
+  <!-- Shared graphics -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- Influenza virion: envelope with spikes (virion-shell) + 8 gene segments (7 around 1). Colour via currentColor. -->
+      <symbol id="virion-shell" viewBox="0 0 200 200">
+        <g stroke="currentColor" stroke-width="5" stroke-linecap="round">
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(0 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(22.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(45 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(67.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(90 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(112.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(135 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(157.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(180 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(202.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(225 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(247.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(270 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(292.5 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(315 100 100)"/>
+          <line x1="100" y1="6" x2="100" y2="20" transform="rotate(337.5 100 100)"/>
+        </g>
+        <circle cx="100" cy="100" r="78" fill="currentColor" fill-opacity="0.14" stroke="currentColor" stroke-width="6"/>
+      </symbol>
+      <symbol id="virion" viewBox="0 0 200 200">
+        <use href="#virion-shell"/>
+        <g fill="currentColor">
+          <circle cx="100" cy="100" r="15"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(0 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(51.43 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(102.86 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(154.29 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(205.71 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(257.14 100 100)"/>
+          <circle cx="100" cy="58" r="15" transform="rotate(308.57 100 100)"/>
+        </g>
+      </symbol>
+
+    </defs>
+  </svg>
+
   <div id="stage">
-    <header>
-      <h1 data-ui="title">Virus-Slot-Machine</h1>
-      <p class="subtitle" data-ui="subtitle"></p>
+
+    <!-- (1) Header -->
+    <header class="header">
+      <h1 data-ui="title"></h1>
     </header>
 
+    <!-- (2) Source viruses – filled from content.json "viruses" -->
+    <section class="sources">
+      <div class="section-label" data-ui="sourcesLabel"></div>
+      <div class="source-row" id="sources"></div>
+    </section>
+
+    <!-- (3)+(4) The machine: mixing host + result tiles -->
     <main class="machine">
-      <div class="reel-labels" id="reel-labels"></div>
-      <div class="reels" id="reels">
-        <div class="payline" aria-hidden="true"></div>
+      <div class="mixer">
+        <!-- Mixing host: small, above the new virus -->
+        <figure class="mixer-host">
+          <div class="mixer-icon" data-ui="hostIcon"></div>
+          <figcaption>
+            <span class="caption-name" data-ui="hostName"></span>
+            <span class="caption-label" data-ui="hostLabel"></span>
+          </figcaption>
+        </figure>
+        <div class="mixer-arrow" aria-hidden="true">↓</div>
+        <!-- New virus: the focus, centre of the machine – the mixing happens here -->
+        <figure class="mixer-virus">
+          <svg class="mix-virion" id="mix-virion" viewBox="0 0 200 200"></svg>
+          <figcaption>
+            <span class="caption-name" data-ui="newVirusLabel"></span>
+            <span class="caption-label" data-ui="newVirusHint"></span>
+          </figcaption>
+        </figure>
       </div>
+
+      <div class="section-label" data-ui="propertiesLabel"></div>
+      <div class="tiles" id="tiles"></div>
     </main>
 
-    <footer>
-      <p class="prompt" data-ui="prompt"></p>
-    </footer>
+    <!-- Prior immunity: concerns people, not the virus → set apart from the machine -->
+    <section class="human-bar" id="human-bar"></section>
 
-    <div class="lang-hint" data-ui="langHint"></div>
-
-    <section class="result" id="result" aria-live="polite">
-      <h2 class="result-headline" id="result-headline"></h2>
-      <p class="result-virus" id="result-virus"></p>
+    <!-- Result screen (4.1): overlays the machine after a round. Filled by js/main.js from content.json "results". -->
+    <section class="result" id="result" hidden>
+      <div class="result-head">
+        <div class="result-label" data-ui="resultLabel"></div>
+        <div class="result-title-row">
+          <span class="result-icon" id="result-icon"></span>
+          <h2 class="result-title" id="result-title"></h2>
+        </div>
+      </div>
+      <figure class="result-virus">
+        <svg class="result-virion" id="result-virion" viewBox="0 0 200 200"></svg>
+        <figcaption>
+          <span class="caption-label" data-ui="resultVirusLabel"></span>
+          <span class="result-legend" id="result-legend"></span>
+        </figcaption>
+      </figure>
       <div class="result-tiles" id="result-tiles"></div>
+      <div class="result-human" id="result-human"></div>
       <p class="result-text" id="result-text"></p>
-      <p class="result-again" data-ui="againHint"></p>
+      <div class="result-hint" data-ui="resultHint"></div>
     </section>
 
     <div class="error" id="error" hidden></div>
   </div>
 
-  <script src="js/outcome.js"></script>
-  <script src="js/audio.js"></script>
   <script src="js/input.js"></script>
-  <script src="js/reels.js"></script>
+  <script src="js/reassortment.js"></script>
+  <script src="js/rules.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/animation.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

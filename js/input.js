@@ -2,14 +2,11 @@
  * Input abstraction. The game only knows abstract actions:
  *   "spin"     – mouse click or Space (the physical lever will send Space)
  *   "language" – L key (temporary, until the final hardware decision)
- *
- * Debug keys 1 / 2 / 3 force a spillover / near miss / miss.
  */
 (function (root) {
   'use strict';
 
   const handlers = { spin: [], language: [] };
-  const DEBUG_KEYS = { Digit1: 'spillover', Digit2: 'nearMiss', Digit3: 'miss' };
 
   function emit(action, payload) {
     handlers[action].forEach((fn) => fn(payload || {}));
@@ -25,8 +22,6 @@
         emit('spin');
       } else if (e.code === 'KeyL') {
         emit('language');
-      } else if (DEBUG_KEYS[e.code]) {
-        emit('spin', { forced: DEBUG_KEYS[e.code] });
       }
     });
 

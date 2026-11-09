@@ -1,226 +1,322 @@
 {
-  "meta": {
-    "version": "0.1",
-    "status": "Entwurf – fachliche Prüfung durch die Forschenden ausstehend"
-  },
-
-  "languages": ["de", "en"],
-
-  "settings": {
-    "defaultLanguage": "de",
-    "weights": { "spillover": 0.40, "nearMiss": 0.35, "miss": 0.25 },
-    "nearMissLastReelBias": 0.6,
-    "firstStopMs": 1600,
-    "staggerMs": 650,
-    "nearMissExtraMs": 1400,
-    "resultDelayMs": 600,
-    "resultSeconds": 20,
-    "inputCooldownMs": 400
-  },
-
-  "ui": {
-    "title":             { "de": "Virus-Slot-Machine", "en": "Virus Slot Machine" },
-    "subtitle":          { "de": "Springt das Virus vom Tier auf den Menschen über?", "en": "Will the virus jump from animals to humans?" },
-    "prompt":            { "de": "Zieh am Hebel!", "en": "Pull the lever!" },
-    "langHint":          { "de": "L · English", "en": "L · Deutsch" },
-    "spilloverHeadline": { "de": "Spillover!", "en": "Spillover!" },
-    "nearMissHeadline":  { "de": "Fast!", "en": "So close!" },
-    "missHeadline":      { "de": "Niete", "en": "No luck" },
-    "nearMissVirus":     { "de": "Beinahe: {virus}", "en": "Almost: {virus}" },
-    "againHint":         { "de": "Hebel ziehen für eine neue Runde", "en": "Pull the lever for a new round" },
-    "loadError":         { "de": "content.json konnte nicht geladen werden. Bitte über einen lokalen Webserver starten (siehe README).", "en": "Could not load content.json. Please run via a local web server (see README)." }
-  },
-
-  "reelOrder": ["host", "symptom", "transmission"],
-
-  "reels": {
-    "host": {
-      "label": { "de": "Wirt", "en": "Host" },
-      "symbols": [
-        { "id": "chimpanzee", "icon": "🦍", "label": { "de": "Schimpanse", "en": "Chimpanzee" } },
-        { "id": "macaque",    "icon": "🐒", "label": { "de": "Makake", "en": "Macaque" } },
-        { "id": "bat",        "icon": "🦇", "label": { "de": "Fledermaus", "en": "Bat" } },
-        { "id": "flyingfox",  "icon": "🦇", "label": { "de": "Flughund", "en": "Fruit bat" } },
-        { "id": "dromedary",  "icon": "🐪", "label": { "de": "Dromedar", "en": "Dromedary" } },
-        { "id": "bird",       "icon": "🐦", "label": { "de": "Vogel", "en": "Bird" } },
-        { "id": "rodent",     "icon": "🐭", "label": { "de": "Nagetier", "en": "Rodent" } },
-        { "id": "dog",        "icon": "🐕", "label": { "de": "Hund", "en": "Dog" } }
-      ]
-    },
-    "symptom": {
-      "label": { "de": "Symptome", "en": "Symptoms" },
-      "symbols": [
-        { "id": "respiratory",  "icon": "🫁", "label": { "de": "Atemwege", "en": "Airways" } },
-        { "id": "fever",        "icon": "🤒", "label": { "de": "Fieber", "en": "Fever" } },
-        { "id": "neurological", "icon": "🧠", "label": { "de": "Neurologisch", "en": "Neurological" } },
-        { "id": "hemorrhagic",  "icon": "🩸", "label": { "de": "Hämorrhagisch", "en": "Haemorrhagic" } },
-        { "id": "immune",       "icon": "🛡️", "label": { "de": "Immunschwäche", "en": "Immune deficiency" } },
-        { "id": "kidney",       "icon": "🫘", "label": { "de": "Niere", "en": "Kidney" } }
-      ]
-    },
-    "transmission": {
-      "label": { "de": "Übertragung", "en": "Transmission" },
-      "symbols": [
-        { "id": "droplets",   "icon": "💨", "label": { "de": "Tröpfchen/Aerosole", "en": "Droplets/aerosols" } },
-        { "id": "bite",       "icon": "🦷", "label": { "de": "Biss/Kratzer", "en": "Bite/scratch" } },
-        { "id": "bodyfluids", "icon": "💧", "label": { "de": "Körperflüssigkeiten", "en": "Body fluids" } },
-        { "id": "mosquito",   "icon": "🦟", "label": { "de": "Mückenstich", "en": "Mosquito bite" } },
-        { "id": "tick",       "icon": "🕷️", "label": { "de": "Zeckenstich", "en": "Tick bite" } },
-        { "id": "dust",       "icon": "🌫️", "label": { "de": "Staub", "en": "Dust" } }
-      ]
-    }
-  },
-
-  "spillovers": [
-    {
-      "id": "hiv", "host": "chimpanzee", "symptom": "immune", "transmission": "bodyfluids",
-      "name": { "de": "HIV (aus SIV)", "en": "HIV (from SIV)" },
-      "evolution": {
-        "de": "HIV entstand aus einem Affenvirus (SIV), das sich an den Menschen angepasst hat.",
-        "en": "HIV arose from a monkey virus (SIV) that adapted to humans."
-      },
-      "reviewNote": "Gameplan: Übertragung „Blut/Körperflüssigkeiten“ → Symbol bodyfluids.",
-      "image": null, "sources": []
-    },
-    {
-      "id": "herpesb", "host": "macaque", "symptom": "neurological", "transmission": "bite",
-      "name": { "de": "Herpes-B-Virus", "en": "Herpes B virus" },
-      "evolution": {
-        "de": "Für Makaken ist das Virus meist harmlos – erst im Menschen, einem fremden Wirt, wird es lebensgefährlich.",
-        "en": "In macaques the virus is mostly harmless – only in humans, an unfamiliar host, does it become life-threatening."
-      },
-      "image": null, "sources": []
-    },
-    {
-      "id": "sarscov2", "host": "bat", "symptom": "respiratory", "transmission": "droplets",
-      "name": { "de": "SARS-CoV-2", "en": "SARS-CoV-2" },
-      "evolution": {
-        "de": "Vermutlich aus Fledermaus-Coronaviren hervorgegangen, passte sich SARS-CoV-2 an den Menschen an – und bildet bis heute neue Varianten.",
-        "en": "Probably descended from bat coronaviruses, SARS-CoV-2 adapted to humans – and keeps producing new variants."
-      },
-      "image": null, "sources": []
-    },
-    {
-      "id": "mers", "host": "dromedary", "symptom": "respiratory", "transmission": "droplets",
-      "name": { "de": "MERS-CoV", "en": "MERS-CoV" },
-      "evolution": {
-        "de": "Das Coronavirus zirkuliert in Dromedaren, oft ohne sie krank zu machen – enger Kontakt reicht für den Sprung zum Menschen.",
-        "en": "The coronavirus circulates in dromedaries, often without making them ill – close contact is enough to jump to humans."
-      },
-      "reviewNote": "Gameplan: „enger Kontakt/Tröpfchen“ → Symbol droplets (kein eigenes Kontakt-Symbol).",
-      "image": null, "sources": []
-    },
-    {
-      "id": "h5n1", "host": "bird", "symptom": "respiratory", "transmission": "droplets",
-      "name": { "de": "Vogelgrippe H5N1", "en": "Avian flu H5N1" },
-      "evolution": {
-        "de": "Vogelgrippeviren verändern sich ständig und tauschen Gene aus – jede neue Variante könnte besser zum Menschen passen.",
-        "en": "Avian flu viruses constantly change and swap genes – any new variant could fit humans better."
-      },
-      "reviewNote": "Gameplan: Symptome „Atemwege/Fieber“ → respiratory; Übertragung „Kontakt/Tröpfchen“ → droplets.",
-      "image": null, "sources": []
-    },
-    {
-      "id": "westnile", "host": "bird", "symptom": "fever", "transmission": "mosquito",
-      "name": { "de": "West-Nil-Virus", "en": "West Nile virus" },
-      "evolution": {
-        "de": "Mücken tragen das Virus von Vogel zu Vogel – der Mensch ist für das Virus eine Sackgasse.",
-        "en": "Mosquitoes carry the virus from bird to bird – for the virus, humans are a dead end."
-      },
-      "reviewNote": "Gameplan: „Fieber, selten Hirnhautentzündung“ → fever.",
-      "image": null, "sources": []
-    },
-    {
-      "id": "puumala", "host": "rodent", "symptom": "kidney", "transmission": "dust",
-      "name": { "de": "Hantavirus (Puumala)", "en": "Hantavirus (Puumala)" },
-      "evolution": {
-        "de": "Rötelmäuse tragen das Virus, ohne zu erkranken – Wirt und Virus haben sich über lange Zeit aneinander angepasst.",
-        "en": "Bank voles carry the virus without falling ill – host and virus have adapted to each other over a long time."
-      },
-      "reviewNote": "Gameplan: Wirt „Nagetier (Rötelmaus)“, Symptome „Fieber/Niere“ → kidney.",
-      "image": null, "sources": []
-    },
-    {
-      "id": "tbe", "host": "rodent", "symptom": "neurological", "transmission": "tick",
-      "name": { "de": "FSME-Virus", "en": "TBE virus" },
-      "evolution": {
-        "de": "Das Virus pendelt zwischen Zecken und kleinen Nagetieren – der Mensch ist nur ein zufälliger Fehlwirt.",
-        "en": "The virus cycles between ticks and small rodents – humans are just an accidental dead-end host."
-      },
-      "reviewNote": "Gameplan: „Fieber/Hirnhautentzündung“ → neurological (fever wäre auch möglich).",
-      "image": null, "sources": []
-    },
-    {
-      "id": "rabies", "host": "dog", "symptom": "neurological", "transmission": "bite",
-      "name": { "de": "Tollwutvirus", "en": "Rabies virus" },
-      "evolution": {
-        "de": "Das Virus wandert über Nerven ins Gehirn und macht seinen Wirt bissig – so sorgt es selbst für seine Verbreitung.",
-        "en": "The virus travels along nerves to the brain and makes its host bite – ensuring its own spread."
-      },
-      "image": null, "sources": []
-    },
-    {
-      "id": "ebola", "host": "flyingfox", "symptom": "hemorrhagic", "transmission": "bodyfluids",
-      "name": { "de": "Ebolavirus", "en": "Ebola virus" },
-      "evolution": {
-        "de": "Flughunde gelten als natürliches Reservoir – über Körperflüssigkeiten infizierter Tiere gelangt das Virus zum Menschen.",
-        "en": "Fruit bats are considered the natural reservoir – the virus reaches humans through body fluids of infected animals."
-      },
-      "reviewNote": "Gameplan: „Marburg- oder Ebolavirus“ – Auswahl offen.",
-      "image": null, "sources": []
-    }
+  "_comment": "All visitor-facing text, DE + EN. Edit freely – no code changes needed. Fields starting with _ or named reviewNote are notes for reviewers and are never shown. shortLabel = heading on the tile, label = full name (result screen).",
+  "languages": [
+    "de",
+    "en"
   ],
-
-  "nearMiss": {
-    "comment": "Platzhalter: {virus} = Name des knapp verpassten Virus, {correct} = richtiges Symbol der abweichenden Walze.",
-    "byReel": {
-      "host": {
-        "de": [
-          "Symptome und Übertragung passen zu {virus} – der Wirt wäre aber: {correct}.",
-          "{virus} braucht ein anderes Tier: {correct}."
-        ],
-        "en": [
-          "Symptoms and transmission fit {virus} – but its host is: {correct}.",
-          "{virus} needs a different animal: {correct}."
-        ]
+  "defaultLanguage": "de",
+  "ui": {
+    "title": {
+      "de": "Virus-Slot-Machine",
+      "en": "Virus Slot Machine"
+    },
+    "subtitle": {
+      "de": "Vogelgrippe trifft Menschengrippe –\nwas entsteht im Schwein?",
+      "en": "Bird flu meets human flu –\nwhat comes out of the pig?"
+    },
+    "sourcesLabel": {
+      "de": "Ausgangsviren",
+      "en": "Source viruses"
+    },
+    "hostIcon": {
+      "de": "🐖",
+      "en": "🐖"
+    },
+    "hostLabel": {
+      "de": "Mischwirt",
+      "en": "Mixing host"
+    },
+    "hostName": {
+      "de": "Schwein",
+      "en": "Pig"
+    },
+    "newVirusLabel": {
+      "de": "Neues Virus",
+      "en": "New virus"
+    },
+    "newVirusHint": {
+      "de": "8 Gensegmente, neu gemischt",
+      "en": "8 gene segments, newly mixed"
+    },
+    "propertiesLabel": {
+      "de": "Eigenschaften des neuen Virus",
+      "en": "Properties of the new virus"
+    },
+    "unknownValue": {
+      "de": "?",
+      "en": "?"
+    },
+    "resultLabel": {
+      "de": "Ergebnis",
+      "en": "Result"
+    },
+    "resultVirusLabel": {
+      "de": "So ist dein neues Virus gemischt",
+      "en": "This is how your new virus is mixed"
+    },
+    "resultHint": {
+      "de": "Zieh am Hebel für eine neue Mischung!",
+      "en": "Pull the lever for a new mix!"
+    },
+    "origin": {
+      "bird": {
+        "de": "Vogel",
+        "en": "Bird"
       },
-      "symptom": {
-        "de": [
-          "Wirt und Übertragung passen zu {virus} – typisch wäre aber: {correct}.",
-          "Tier und Weg stimmen, aber {virus} macht anders krank: {correct}."
-        ],
-        "en": [
-          "Host and transmission fit {virus} – but typical would be: {correct}.",
-          "Animal and route are right, but {virus} causes a different illness: {correct}."
-        ]
-      },
-      "transmission": {
-        "de": [
-          "Wirt und Symptome passen zu {virus} – übertragen wird es aber so: {correct}.",
-          "{virus} hätte einen anderen Weg gebraucht: {correct}."
-        ],
-        "en": [
-          "Host and symptoms fit {virus} – but it spreads like this: {correct}.",
-          "{virus} would have needed a different route: {correct}."
-        ]
+      "human": {
+        "de": "Mensch",
+        "en": "Human"
       }
     }
   },
-
-  "miss": {
-    "texts": {
-      "de": [
-        "Niete! Dieses Virus bleibt lieber zu Hause in seinem Tier.",
-        "Schlüssel passt nicht ins Schloss: Das Virus findet an unseren Zellen keinen Andockpunkt.",
-        "Zum Glück für uns – die allermeisten Tierviren schaffen den Sprung zum Menschen nie.",
-        "Diese Kombination gibt es in der Natur nicht. Die Evolution war hier wählerischer."
-      ],
-      "en": [
-        "No luck! This virus prefers to stay at home in its animal.",
-        "Wrong key for the lock: the virus finds nowhere to dock on our cells.",
-        "Lucky for us – the vast majority of animal viruses never make the jump to humans.",
-        "This combination doesn't exist in nature. Evolution was pickier here."
-      ]
+  "viruses": [
+    {
+      "id": "v1",
+      "color": "#34c26b",
+      "origin": "bird",
+      "name": {
+        "de": "Virus 1",
+        "en": "Virus 1"
+      }
+    },
+    {
+      "id": "v2",
+      "color": "#3d8bff",
+      "origin": "bird",
+      "name": {
+        "de": "Virus 2",
+        "en": "Virus 2"
+      }
+    },
+    {
+      "id": "v3",
+      "color": "#ff4fa8",
+      "origin": "human",
+      "name": {
+        "de": "Virus 3",
+        "en": "Virus 3"
+      }
     }
+  ],
+  "segments": {
+    "reviewNote": "Kurznamen und Funktionen sind die Standardbezeichnungen der Influenza-A-Segmente, stark vereinfacht. Vom Forschenden zu prüfen, ebenso ob sie im Exponat überhaupt angezeigt werden sollen (derzeit werden nur die Nummern angezeigt).",
+    "items": [
+      {
+        "number": 1,
+        "shortName": "PB2",
+        "function": {
+          "de": "Teil des Kopierwerkzeugs, mit dem das Virus seine Gene vervielfältigt",
+          "en": "Part of the copying machine the virus uses to copy its genes"
+        }
+      },
+      {
+        "number": 2,
+        "shortName": "PB1",
+        "function": {
+          "de": "Kern des Kopierwerkzeugs für die Virusgene",
+          "en": "Core of the copying machine for the virus genes"
+        }
+      },
+      {
+        "number": 3,
+        "shortName": "PA",
+        "function": {
+          "de": "Teil des Kopierwerkzeugs für die Virusgene",
+          "en": "Part of the copying machine for the virus genes"
+        }
+      },
+      {
+        "number": 4,
+        "shortName": "HA",
+        "function": {
+          "de": "Schlüssel an der Oberfläche: dockt an die Zelle an",
+          "en": "Key on the surface: docks onto the cell"
+        }
+      },
+      {
+        "number": 5,
+        "shortName": "NP",
+        "function": {
+          "de": "Verpackt die Virusgene",
+          "en": "Packs up the virus genes"
+        }
+      },
+      {
+        "number": 6,
+        "shortName": "NA",
+        "function": {
+          "de": "Schere an der Oberfläche: löst neue Viren von der Zelle",
+          "en": "Scissors on the surface: cut new viruses free from the cell"
+        }
+      },
+      {
+        "number": 7,
+        "shortName": "M",
+        "function": {
+          "de": "Gibt der Virushülle ihre Form",
+          "en": "Gives the virus shell its shape"
+        }
+      },
+      {
+        "number": 8,
+        "shortName": "NS",
+        "function": {
+          "de": "Bremst die Abwehr der Zelle",
+          "en": "Slows down the cell's defences"
+        }
+      }
+    ]
+  },
+  "properties": [
+    {
+      "id": "receptor",
+      "icon": "🔑",
+      "shortLabel": {
+        "de": "Rezeptor",
+        "en": "Receptor"
+      },
+      "label": {
+        "de": "Rezeptor",
+        "en": "Receptor"
+      },
+      "states": {
+        "bird": {
+          "de": "Vogel",
+          "en": "Bird"
+        },
+        "human": {
+          "de": "Mensch",
+          "en": "Human"
+        }
+      }
+    },
+    {
+      "id": "temperature",
+      "icon": "🌡️",
+      "shortLabel": {
+        "de": "Temperatur",
+        "en": "Temperature"
+      },
+      "label": {
+        "de": "Körper­temperatur",
+        "en": "Body temperature"
+      },
+      "states": {
+        "warm": {
+          "de": "42 °C (Vogel)",
+          "en": "42 °C (bird)"
+        },
+        "cool": {
+          "de": "37 °C (Mensch)",
+          "en": "37 °C (human)"
+        }
+      }
+    },
+    {
+      "id": "transmission",
+      "icon": "🤧",
+      "shortLabel": {
+        "de": "Übertragung",
+        "en": "Spread"
+      },
+      "label": {
+        "de": "Mensch-zu-Mensch-Übertrag­barkeit",
+        "en": "Human-to-human transmission"
+      },
+      "states": {
+        "poor": {
+          "de": "schlecht",
+          "en": "poor"
+        },
+        "good": {
+          "de": "gut",
+          "en": "good"
+        }
+      }
+    },
+    {
+      "id": "immunity",
+      "aboutHumans": true,
+      "_aboutHumans": "true = concerns people, not the virus → tile is visually set apart (separate bar below the machine).",
+      "icon": "🧑‍🤝‍🧑",
+      "shortLabel": {
+        "de": "Vorimmunität der Menschen",
+        "en": "People's prior immunity"
+      },
+      "label": {
+        "de": "Vor­immunität",
+        "en": "Prior immunity"
+      },
+      "states": {
+        "present": {
+          "de": "vorhanden",
+          "en": "present"
+        },
+        "none": {
+          "de": "keine",
+          "en": "none"
+        }
+      }
+    }
+  ],
+  "rules": {
+    "_comment": "PLATZHALTER ohne fachlichen Anspruch (docs/schritte.md, Anhang A). Jede Eigenschaft hängt an Segment-Slot(s): Stammen mindestens 'min' der genannten Segmente von einem Virus mit Herkunft 'origin', gilt 'then', sonst 'else'. Ohne 'min' müssen alle genannten Segmente passen. Zustände = Schlüssel aus properties[].states. Durchrechnen: node tools/simulate.js",
+    "reviewNote": "Mit dem Forschenden klären: welche Segmente bestimmen welche Eigenschaft? Hinweis: biologisch sitzt der Rezeptor-Schlüssel auf Segment 4 (HA); der Platzhalter nutzt Segment 1.",
+    "properties": {
+      "receptor": { "segments": [1], "when": { "origin": "human", "min": 1 }, "then": "human", "else": "bird" },
+      "temperature": { "segments": [2], "when": { "origin": "human", "min": 1 }, "then": "cool", "else": "warm" },
+      "transmission": { "segments": [3], "when": { "origin": "human", "min": 1 }, "then": "good", "else": "poor" },
+      "immunity": { "segments": [4], "when": { "origin": "human", "min": 1 }, "then": "present", "else": "none" }
+    },
+    "jackpot": {
+      "receptor": "human",
+      "temperature": "cool",
+      "transmission": "good",
+      "immunity": "none"
+    }
+  },
+  "results": {
+    "_comment": "Ergebnisscreen. Die Kategorien werden der Reihe nach geprüft, die erste passende gewinnt. 'when.jackpot': true = alle vier Zustände wie in rules.jackpot. 'when.jackpotStates' = mindestens 'min' der genannten Eigenschaften haben ihren Jackpot-Zustand. Ohne 'when' = Auffangkategorie (muss die letzte sein). 'id' steuert das Aussehen (jackpot = hervorgehoben). Texte max. ca. 40–50 Wörter. Häufigkeiten: node tools/simulate.js",
+    "reviewNote": "Texte sind Entwürfe – vom Forschenden zu prüfen (Schritt 4.3).",
+    "categories": [
+      {
+        "id": "jackpot",
+        "when": { "jackpot": true },
+        "icon": "⚠️",
+        "title": {
+          "de": "Pandemie­potenzial",
+          "en": "Pandemic potential"
+        },
+        "text": {
+          "de": "Dieses Virus passt zum Menschen: Es dockt an unsere Zellen an, vermehrt sich bei 37 °C und springt leicht von Mensch zu Mensch. Und niemand ist dagegen geschützt. So eine Mischung ist selten – aber auf ähnliche Weise sind frühere Grippe­pandemien entstanden.",
+          "en": "This virus fits humans: it docks onto our cells, multiplies at 37 °C and spreads easily from person to person. And nobody is protected against it. A mix like this is rare – but earlier flu pandemics arose in a similar way."
+        }
+      },
+      {
+        "id": "partial",
+        "when": { "jackpotStates": { "properties": ["receptor", "temperature", "transmission"], "min": 1 } },
+        "icon": "🔍",
+        "title": {
+          "de": "Teilweise angepasst",
+          "en": "Partly adapted"
+        },
+        "text": {
+          "de": "Das neue Virus hat Gene vom Menschenvirus bekommen und ist teilweise an den Menschen angepasst. Für eine Pandemie fehlt aber noch etwas: Entweder passt es noch nicht ganz zu uns, oder viele Menschen sind schon geschützt. Forschende behalten solche Viren im Blick.",
+          "en": "The new virus has picked up genes from the human virus and is partly adapted to humans. But something is still missing for a pandemic: either it doesn't quite fit us yet, or many people are already protected. Researchers keep an eye on viruses like this."
+        }
+      },
+      {
+        "id": "harmless",
+        "icon": "🐦",
+        "title": {
+          "de": "Kaum Gefahr für uns",
+          "en": "Little risk to humans"
+        },
+        "text": {
+          "de": "Dieses Virus ist ein Vogelvirus geblieben: Es passt zu Vogelzellen, mag die 42 °C im Vogelkörper und verbreitet sich unter Menschen kaum. Für uns ist es deshalb wenig gefährlich – für Geflügel und Wildvögel aber womöglich schon.",
+          "en": "This virus has stayed a bird virus: it fits bird cells, likes the 42 °C inside a bird's body and hardly spreads between people. So it poses little danger to us – though it may still threaten poultry and wild birds."
+        }
+      }
+    ]
   }
 }

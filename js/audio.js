@@ -63,23 +63,40 @@
   const Sound = {
     unlock: ensure,
 
-    spinStart() {
-      noise({ dur: 0.45, vol: 0.3, from: 300, to: 3500 });
-      tone({ freq: 180, freqEnd: 520, type: 'sawtooth', dur: 0.3, vol: 0.08 });
+    // Viruses fly down into the pig
+    swallow() {
+      noise({ dur: 0.8, vol: 0.18, from: 3000, to: 300 });
     },
 
+    // One virus disappears in the pig
+    plop() {
+      tone({ freq: 520, freqEnd: 160, type: 'sine', dur: 0.14, vol: 0.3 });
+    },
+
+    // Colour change while mixing
     tick() {
       const now = performance.now();
-      if (now - lastTick < 45) return;   // throttle at high reel speed
+      if (now - lastTick < 45) return;   // throttle at high flicker speed
       lastTick = now;
       tone({ freq: 1500, type: 'square', dur: 0.025, vol: 0.05 });
     },
 
-    reelStop(index) {
-      // each reel gets its own pitch → audible build-up
-      const base = [196, 247, 294][index] || 220;
-      tone({ freq: base * 2, freqEnd: base, type: 'triangle', dur: 0.18, vol: 0.35 });
-      noise({ dur: 0.08, vol: 0.15, from: 2000, to: 800 });
+    // A segment locks on its final colour – pitch rises segment by segment, the last one is heavier
+    segmentLock(index, count, isLast) {
+      const base = 330 * Math.pow(2, index / Math.max(count - 1, 1)); // one octave over all segments
+      noise({ dur: 0.05, vol: 0.2, from: 3000, to: 1200 });
+      tone({ freq: base * 2, freqEnd: base, type: 'triangle', dur: isLast ? 0.35 : 0.12, vol: isLast ? 0.45 : 0.3 });
+      if (isLast) tone({ freq: base, type: 'sine', at: 0.02, dur: 0.5, vol: 0.2 });
+    },
+
+    // A result tile lights up; the prior-immunity tile gets a different, softer chord
+    tileReveal(isHuman) {
+      if (isHuman) {
+        [392, 493.88, 587.33].forEach((f, i) => tone({ freq: f, type: 'sine', at: i * 0.06, dur: 0.7, vol: 0.18 }));
+      } else {
+        tone({ freq: 880, type: 'triangle', dur: 0.2, vol: 0.25 });
+        tone({ freq: 1320, type: 'sine', at: 0.05, dur: 0.25, vol: 0.12 });
+      }
     },
 
     spillover() {

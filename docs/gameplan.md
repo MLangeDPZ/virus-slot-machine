@@ -1,106 +1,97 @@
-Virus Slot Machine – Gameplan v0.2
-Stand: 03.11.2026 · DPZ-Jubiläumsausstellung 2027 (Oberthema Evolution), Themenblock Infektionsforschung
-0. Aktueller Status (03.11.2026)
-Setup erledigt: VS Code + Git + Claude-Code-Erweiterung auf dem Mac, GitHub-Account angelegt.
-Projektordner: ~/Projects/virus-slot-machine (Git-Repo), Gameplan liegt unter docs/gameplan.md.
-Erster Prototyp läuft: Hochkant-Layout, 3 Walzen (Tier · Symptome · Übertragung), Spin per Mausklick + Leertaste, gewichtete Ergebnislogik (40/35/25), einfacher Ergebnisscreen, Inhalte DE/EN in content.json, Sprachwechsel per Taste L, Emoji-Platzhalter, Web-Audio-Sounds.
-Online: GitHub-Repo (öffentlich) + GitHub Pages aktiv (https://<username>.github.io/virus-slot-machine/).
-Lokale Vorschau: im Projektordner python3 -m http.server 8000 → http://localhost:8000 (Doppelklick auf index.html funktioniert nicht, da JSON geladen wird).
-Noch nicht gebaut: Mutation, Virendex, Attract-Modus, Auto-Reset, Slot-Automaten-Look, echte Icons/Bilder, Credits/Fußleiste.
-0.1 Arbeitsweise
-Claude Code = Werkstatt: alle Änderungen am Code/an content.json. Eine Aufgabe pro Prompt → im Browser testen → committen → pushen (Sync Changes).
+Virus Slot Machine – Gameplan v0.3
+Stand: 09.11.2026 · DPZ-Jubiläumsausstellung 2027 (Oberthema Evolution), Themenblock Infektionsforschung
+Großer Konzeptwechsel (Nov 2026): Nach dem Meeting mit dem zuständigen Forschenden wechselt das Exponat vom Zoonose-Fokus (Tier · Symptome · Übertragung) zum Influenza-/Reassortment-Fokus. Kernmechanik ist jetzt das Neu-Mischen der 8 Gensegmente von Influenza-A-Viren. Passt deutlich besser zur konkreten Forschung am DPZ. Der technische Unterbau bleibt gleich (siehe Abschnitt 2), die Spielmechanik und Inhalte werden neu gebaut.
+0. Aktueller Status (09.11.2026)
+Technischer Unterbau steht (aus dem Zoonose-Prototyp übernommen): VS Code + Git + Claude Code auf dem Mac, GitHub-Repo (öffentlich) + GitHub Pages aktiv, Hochkant-Layout, Spin per Mausklick/Leertaste, Inhalte DE/EN in content.json, Sprachwechsel per Taste L, Web-Audio-Sounds, einfacher Ergebnisscreen.
+Wird neu gebaut: die gesamte Spielmechanik (Reassortment statt 3 Walzen) und die Inhalte.
+Vorgehen Repo: im selben Repo weiterarbeiten, aber die Spiellogik sauber ersetzen. Alten Zoonose-Stand vorher sichern (Git-Tag v0.1-zoonose oder Branch), damit nichts verloren geht.
+Lokale Vorschau: im Projektordner python3 -m http.server 8000 → http://localhost:8000.
+0.1 Arbeitsweise (unverändert)
+Claude Code = Werkstatt: alle Änderungen am Code / an content.json. Eine Aufgabe pro Prompt → im Browser testen → committen → pushen.
 Claude-Chat (Projekt) = Planungsbüro: Konzept, Entscheidungen, Inhalte/Texte, Abstimmung mit Forschenden, Prompts für Claude Code.
-Brücke: docs/gameplan.md. Bei Änderungen hier Gameplan aktualisieren → in docs/gameplan.md einfügen → Claude Code Bescheid geben.
-CLAUDE.md im Projekt-Root mit festen Regeln (offline, keine CDNs, DE/EN in content.json, Hochkant 1080×1920, keine lizenzierten Dateien im Repo).
-Repo ist öffentlich → niemals einchecken: TheSansB-Fontdateien, Adobe-Stock-Bilder, unveröffentlichtes Material aus der DPZ-Mediendatenbank. Lösung (offen): Dateien lokal halten und per .gitignore ausschließen, mit Fallback-Schrift für die Online-Version.
-1. Projektrahmen & Entscheidungen
-Vorgehen: Prototyp bauen → fachliche Abstimmung mit den Forschenden → überarbeitete Version an die Agentur (die bereits das Zahlenmerkspiel-Exponat gebaut hat). Die Agentur soll nur noch Case + Hebelmechanik bauen → Prototyp muss optisch schon nah am Endprodukt sein (Kosten niedrig halten).
-Zielgruppe: Göttinger Bürger:innen mit Wissenschaftsinteresse, Studierende, Schüler:innen/Schulklassen ab 15.
-Freigabe: Slot-Machine-Idee kam von den Forschenden, vom Kommunikations-Team-Lead abgesegnet.
-Format: Hochkant (Portrait), so nah wie möglich an einem echten Slot-Automaten.
-Eingabe: Prototyp per Mausklick UND Tastatur (Leertaste) startbar. Ziel fürs Exponat: möglichst kein Touchscreen (günstiger) → Hebel als einzige (bzw. Haupt-)Eingabe.
-Sprachen: Deutsch + Englisch, schon im Prototyp.
-Hausschrift: TheSansB (wird bereits im Zahlenmerkspiel-Exponat verwendet; als lokale WOFF2-Datei einbinden, nicht im öffentlichen Repo).
-IT: GitHub-Nutzung von der DPZ-IT freigegeben.
-Entwicklungsrechner: Mac, VS Code + Claude Code.
-2. Technische Architektur
+Brücke: docs/gameplan.md. Änderungen hier im Chat → in docs/gameplan.md einfügen → Claude Code Bescheid geben.
+CLAUDE.md im Projekt-Root mit festen Regeln (offline, keine CDNs, DE/EN in content.json, Hochkant 1080×1920, keine lizenzierten Dateien im öffentlichen Repo).
+Repo ist öffentlich → niemals einchecken: TheSansB-Fontdateien, Adobe-Stock-Bilder, unveröffentlichtes DPZ-Material. Lokal halten + .gitignore + Fallback-Schrift online.
+1. Die wissenschaftliche Grundidee (fachlicher Hintergrund)
+Quelle: Vorlesungsfolien des Forschenden (v. a. Folie 1 „Hintergrund" und Folie 6 „Reassortment"), zusammengefasst in den Meetingnotizen.
+Influenza-A-Viren haben 8 getrennte Gensegmente – anders als Viren mit einem einzigen, zusammenhängenden Genom. Jedes Segment codiert für andere Virusbestandteile (u. a. Oberflächenproteine).
+Bei der Vermehrung in der Wirtszelle wird nur „geprüft", dass alle 8 Segmente vorhanden sind – nicht, aus welchem Virus sie stammen.
+Sind mehrere Viren gleichzeitig im selben Wirt, kommt es zum „Mix-and-Match" (Reassortment): das neue Virus kann Segmente aus verschiedenen Ausgangsviren kombinieren (z. B. Segment 1,3,4,5,6 von Virus A und 2,7,8 von Virus B). So entstehen neue Virusvarianten.
+Das Schwein als Mischwirt: Es trägt Rezeptoren für vogel- und menschenspezifische Viren und kann deshalb von beiden befallen werden → idealer Ort für die Neu-Mischung. (In der Vorlesungsfolie ist der Mischwirt ein Huhn/H7N9; für das Exponat wird das Schwein genutzt, weil es beide Rezeptortypen anschaulich erklärbar macht.)
+Natürliches Reservoir: Wasser-/Geflügel (oft ohne Symptome). Geflügel hat eine höhere Körpertemperatur als der Mensch.
+Was ein Virus für den Menschen gefährlich macht (die vier Eigenschaften im Spiel, s. u.): Anpassung an menschliche Rezeptoren, Anpassung an menschliche Körpertemperatur, Mensch-zu-Mensch-Übertragbarkeit, fehlende Vorimmunität in der Bevölkerung.
+Vereinfachungen (Schwein als Mischwirt, vier unabhängige Ergebnis-Eigenschaften, Begriffe „Vogel/Mensch" statt Fachnamen) sind didaktisch gewollt. In den kommenden Gesprächen mit dem Forschenden wird geprüft, dass nichts fachlich schief hängt. Jetzt zählt zuerst: die Grundidee als Prototyp.
+2. Technische Architektur (unverändert)
 Reine Frontend-Webapp (HTML/CSS/JavaScript), kein Backend, keine Build-Tools.
-Offline-first: keine CDNs, keine externen Fonts/APIs; alle Schriften, Bilder, Sounds lokal im Projekt. Optional PWA/Service Worker.
-Inhalte in separater JSON-Datei (Tiere, Symptome, Übertragungswege, Viren, Texte DE/EN, Quellenangaben) → fachlich prüfbar ohne Code-Eingriff.
+Offline-first: keine CDNs, keine externen Fonts/APIs; alle Schriften, Bilder, Sounds lokal. Optional PWA/Service Worker.
+Inhalte in content.json (Viren, Eigenschaften, Texte DE/EN, Quellen) → fachlich prüfbar ohne Code-Eingriff.
 Hosting Prototyp: GitHub Pages (Link an Forschende).
 Exponat: lokal auf Mini-PC/Raspberry Pi im Browser-Kiosk-Modus (Chromium --kiosk), Autostart, kein Internet nötig.
-Eingabe-Abstraktion: Spiel reagiert auf ein Ereignis „Hebel/Spin“. Hebel = Mikroschalter an Mikrocontroller (z. B. Arduino Pro Micro), der sich als Tastatur ausgibt und z. B. Leertaste sendet. Code bleibt identisch, egal ob Maus, Tastatur oder Hebel.
+Eingabe-Abstraktion: Spiel reagiert auf ein Ereignis „Hebel/Spin". Hebel = Mikroschalter an Mikrocontroller (z. B. Arduino Pro Micro), der sich als Tastatur ausgibt (Leertaste). Code identisch, egal ob Maus, Tastatur oder Hebel.
 Ausstellungsbetrieb: Attract-Modus, Auto-Reset nach ca. 60 s Inaktivität, kein Kontextmenü/Zoom, kein Tracking.
 Animation: CSS/JS, ggf. GSAP (kostenlos, lokal eingebunden).
-3. Spielablauf
-Attract-Modus: Maschine blinkt, Viruspartikel schweben, „Zieh am Hebel!“ / „Pull the lever!“.
-Spin: 3 Walzen drehen, stoppen nacheinander (je eigener Sound → Spannung).
-Walze 1: Wer wird befallen? (Tier, Zoonose-Fokus)
-Walze 2: Welche Symptome?
-Walze 3: Welche Übertragungswege?
-Ergebnis:
-„Spillover!“ (Jackpot): Kombination = echtes Virus → Lichtshow, Fanfare, Ergebnisscreen.
-Beinahe-Treffer (2 von 3): kurzer Lernhinweis („Fast! Hantaviren kommen von Nagetieren, werden aber über Staub übertragen.“).
-Niete: witziger kurzer Hinweis, warum das biologisch nicht passt.
-„Mutieren lassen“ (bestätigt als zentrale Evolutions-Mechanik): Eine Walze dreht erneut – das Virus mutiert. Botschaft: Eine einzige Veränderung (z. B. neuer Übertragungsweg) entscheidet, ob ein Tiervirus zum Problem für den Menschen wird.
-Mehrfachspiel: „Virendex“ sammelt gefundene Spillover-Viren („3 von 10 entdeckt“), Reset nach Inaktivität. Funktioniert mit einem Durchgang und mit mehreren.
-Gewichtete Logik: Ergebnis wird vor der Animation festgelegt (Richtwert: 40 % Spillover, 35 % Beinahe-Treffer, 25 % Niete), Walzen landen passend. (Echte Spielautomaten funktionieren genauso – möglicher Fun Fact.)
-4. Bedienung nur mit Hebel (offener Punkt, Vorschlag)
-Ohne Touchscreen braucht es eine Lösung für Mutation, Sprache und Credits:
-Zustandsabhängiger Hebel: Hebel im Attract-Modus = Spin. Hebel auf dem Ergebnisscreen = Mutation (zufällige Walze, max. 1–2 Mutationen pro Runde, Anzeige „Hebel ziehen zum Mutieren“). Danach bzw. nach einigen Sekunden ohne Eingabe: nächster Hebelzug = neue Runde.
-Alternative: ein zusätzlicher günstiger Arcade-Knopf (wenige Euro, läuft über denselben Mikrocontroller) für „Mutieren“ oder Sprachwahl.
-Sprache ohne Touch: zweisprachige Darstellung oder Attract-Modus wechselt DE/EN; bzw. zweiter Knopf.
-Credits ohne Touch: Credits erscheinen in der Rotation des Attract-Modus. → Mit Forschenden/Team abstimmen; Prototyp so bauen, dass beide Varianten testbar sind.
+3. Neuer Spielablauf (Influenza / Reassortment)
+Verzahnung der beiden im Meeting diskutierten Varianten: A (Segmente mischen) + B (Ergebnis-Eigenschaften), gekoppelt.
+Attract-Modus: Maschine blinkt, drei Ausgangsviren schweben oben, „Zieh am Hebel!" / „Pull the lever!".
+Drei Ausgangsviren oben (farblich klar getrennt, analog zur Reassortment-Grafik):
+Virus 1 – Vogel (grün)
+Virus 2 – Vogel (blau)
+Virus 3 – Mensch (pink)
+Befall des Schweins (Mischwirt): Die drei Viren fahren ins Schwein ein.
+Spin = Reassortment-Animation im Schwein: Die 8 Gensegmente werden sichtbar neu durchgemischt. Jedes Segment behält die Farbe seines Herkunftsvirus → am Ende sieht man buchstäblich eine neue Mischung (z. B. „3 grün, 2 blau, 3 pink"). Das ist das Herzstück und der eigentliche „Dreh" der Slot-Machine.
+Vier Ergebniskacheln unten rutschen/leuchten passend zur entstandenen Mischung auf (je zwei Zustände):
+Rezeptor: Vogel ↔ Mensch
+Körpertemperatur-Anpassung: warm/Geflügel (42°) ↔ kalt/Mensch (37°)
+Mensch-zu-Mensch-Übertragbarkeit: schlecht ↔ gut
+Vorimmunität 🧑 (betrifft den Menschen, nicht das Virus): optisch etwas abgesetzt (Farbe + Mensch-Icon), damit sie nicht mit den Viruseigenschaften verschwimmt.
+Ergebnisscreen: erklärt knapp, was für ein Virus entstanden ist, plus Hintergrundwissen. Der „Jackpot" = an Mensch-Rezeptor angepasst, an 37° angepasst, gut übertragbar, keine Vorimmunität → ein Virus mit Pandemiepotenzial.
+Begriffe: durchgehend einfache Sprache – „Vogel/Mensch", „warm/kalt" – statt Fachbegriffen wie „Alpha-2,3 / Alpha-2,6".
+4. Entscheidungen für später (mit Forschendem)
+Diese Punkte nicht jetzt festlegen – erst Prototyp der Grundidee, dann Abstimmung:
+Jackpot-Häufigkeit: selten (realistisch, „seltener Zufall löst Pandemie aus") vs. häufiger (Exponat muss auch bei nur 1–2 Zügen wirken). → Forschender entscheidet.
+Tonfall beim Jackpot: Slot-Machine „feiert" den Treffer, der „Gewinn" ist aber ein gefährliches Virus. Kontrast bewusst gestalten (Fanfare + ernüchternder Erklärtext), damit es nicht wie das Spielziel „gefährliches Virus bauen" wirkt. → Forschender entscheidet.
+Wiederspielwert: z. B. Freischalten realer, durch Reassortment entstandener Grippe-Pandemien (1957, 1968, 2009) statt des alten „Virendex". → später.
+Kopplung A↔B: wie genau welche Segment-Mischung welche Ergebnis-Eigenschaft bestimmt → fachlich mit Forschendem abstimmen.
+Mutations-Mechanik aus dem alten Konzept: geht evtl. im Reassortment auf oder bleibt als zweiter Schritt → später.
 5. Ergebnisscreen (kurzweilig, keine Textwüste)
-Max. ca. 40–50 Wörter pro Sprache:
-Virusname + Bild (Mediendatenbank DPZ)
-3 Icon-Kacheln: Wirt · Symptome · Übertragung
-1 Satz Evolution (z. B. „HIV entstand aus einem Affenvirus (SIV), das sich an den Menschen angepasst hat.“)
-optional 1 Satz „Forschung am DPZ“
-Hinweis/Button: Mutieren lassen · Neu drehen
-Kernbotschaften: (a) Viren evolvieren/mutieren (DPZ-Forschung u. a. zu neuen SARS-CoV-2-Varianten), (b) Koevolution: Wir evolvieren nicht allein, Viren mutieren schneller als unser Immunsystem nachkommt, (c) One Health, (d) Zoonosen.
-6. Inhaltsvorschlag: 10 Spillover-Kombinationen
-Entwurf – muss fachlich von den Forschenden geprüft werden.
-#	Tier	Symptome	Übertragung	Virus
-1	Schimpanse	Immunschwäche	Blut/Körperflüssigkeiten	HIV (aus SIV)
-2	Makake	Neurologisch	Biss/Kratzer	Herpes-B-Virus
-3	Fledermaus	Atemwege	Tröpfchen/Aerosole	SARS-CoV-2 (Ursprung vermutlich Fledermaus-Coronaviren)
-4	Dromedar	Atemwege	enger Kontakt/Tröpfchen	MERS-CoV
-5	Vogel	Atemwege/Fieber	Kontakt/Tröpfchen	Vogelgrippe H5N1
-6	Vogel	Fieber, selten Hirnhautentzündung	Mückenstich	West-Nil-Virus
-7	Nagetier (Rötelmaus)	Fieber/Niere	Staub mit Ausscheidungen	Hantavirus (Puumala)
-8	Nagetier	Fieber/Hirnhautentzündung	Zeckenstich	FSME-Virus
-9	Hund	Neurologisch	Biss	Tollwut
-10	Flughund	Hämorrhagisches Fieber	Körperflüssigkeiten	Marburg- oder Ebolavirus
-Walzeninhalte daraus:
-Tiere (8): Schimpanse, Makake, Fledermaus, Flughund, Dromedar, Vogel, Nagetier, Hund
-Symptome (6): Atemwege, Fieber, Neurologisch, Hämorrhagisch, Immunschwäche, Niere
-Übertragung (6): Tröpfchen/Aerosole, Biss/Kratzer, Körperflüssigkeiten, Mücke, Zecke, Staub
+Max. ca. 40–50 Wörter pro Sprache.
+Darstellung des entstandenen Virus (gemischte Segmente in den Herkunftsfarben).
+Die vier Eigenschaften als Icon-Kacheln.
+1 Satz Einordnung (was bedeutet diese Mischung?).
+optional 1 Satz „Forschung am DPZ".
+Hinweis/Button: Neu drehen.
+Kernbotschaften: (a) Influenzaviren mischen ihre Gensegmente neu (Reassortment), (b) der Mischwirt (Schwein) ist dafür zentral, (c) nur eine seltene Kombination wird für den Menschen gefährlich, (d) Evolution/Koevolution, One Health.
+6. Bedienung nur mit Hebel (offener Punkt)
+Zustandsabhängiger Hebel: Attract = Spin; Ergebnisscreen = nach Sekunden/nächstem Zug neue Runde.
+Ggf. zusätzlicher günstiger Arcade-Knopf (über denselben Mikrocontroller) für Sprache o. Ä.
+Sprache ohne Touch: zweisprachige Darstellung oder Attract wechselt DE/EN.
+→ Prototyp so bauen, dass Varianten testbar sind.
 7. Look & Feel
-Ziel: ansprechend, „blinkend“, echter Slot-Automat, Virusbezug sofort erkennbar – keine flachen Walzen auf einfarbigem Screen.
-Per Code: Walzenrotation mit Bewegungsunschärfe und Nachfedern, Lauflichter, Glow, Konfetti/Partikel, Screen-Shake, schwebende Viruspartikel (SVG), Gewinnlinien.
-Bilder nötig: Walzensymbole als einheitlich illustrierte Icons (z. B. Vektor-Set Adobe Stock); Fotos (Viren aus DPZ-Mediendatenbank, ggf. Adobe Stock) eher auf dem Ergebnisscreen. Automatenrahmen auf dem Screen nur bei Variante ohne physisches Case.
-Virus-Theming: Walzenrahmen als Virushülle mit Spikes (Bezug zum begehbaren Coronavirus-Modell), Lichter als Viruspartikel, „Labor-Neon“-Farbschema.
+Echter Slot-Automat: „blinkend", Virusbezug sofort erkennbar.
+Per Code: Reassortment-Animation mit Bewegung/Nachfedern, Lauflichter, Glow, Partikel, Screen-Shake, schwebende Viruspartikel (SVG).
+Virus-Theming: Bezug zum begehbaren Coronavirus-Modell der Ausstellung, „Labor-Neon"-Farbschema.
+Bilder nötig: Viren/Segmente als einheitlich illustrierte Icons; Fotos eher auf dem Ergebnisscreen (DPZ-Mediendatenbank / ggf. Adobe Stock).
 8. Sound
-Prototyp: Slot-Sounds per Web Audio API synthetisieren (keine Lizenzfragen). ✔ im ersten Prototyp umgesetzt.
-Später ggf. austauschen: Freesound.org (Filter CC0), Pixabay Sounds.
+Prototyp: Slot-Sounds per Web Audio API synthetisieren (keine Lizenzfragen). ✔
+Später ggf. Freesound.org (CC0) / Pixabay.
 9. Credits, Logos, Lizenzen
-Bildquellen klein in der Bildecke.
-Sound-/Gesamtcredits als kleines „©“-Overlay (schließt automatisch, man verlässt nie das Spiel) bzw. ohne Touch in der Attract-Rotation.
-DPZ-Logo + „Gefördert durch die Deutsche Forschungsgemeinschaft (DFG)“ gut sichtbar, Vorschlag: feste schmale Fußleiste auf allen Screens. DFG-Vorgaben zum Förderhinweis prüfen.
-TheSansB: Lizenz für Exponat-/Web-Einbettung über Zahlenmerkspiel bereits gegeben – Font-Dateien (WOFF2) besorgen. Nicht ins öffentliche Repo (siehe 0.1).
-Adobe Stock Standardlizenz für Ausstellungsdisplay voraussichtlich ausreichend – kurz gegenprüfen. Ebenfalls nicht ins öffentliche Repo.
-10. Offene Punkte
-Bildschirmgröße (Hochkant ist gesetzt).
-Endgültige Bedienung: nur Hebel vs. Hebel + Knopf (siehe Abschnitt 4).
-Fachliche Prüfung der 10 Kombinationen + Beinahe-Treffer-/Nieten-Texte durch Forschende.
-Bildauswahl (Mediendatenbank / Adobe Stock), Icon-Stil.
-Umgang mit lizenzierten Dateien (Font, Bilder) bei öffentlichem Repo: lokal + .gitignore + Fallback online?
+Bildquellen klein in der Ecke.
+DPZ-Logo + „Gefördert durch die DFG" gut sichtbar (Vorschlag: schmale Fußleiste). DFG-Vorgaben zum Förderhinweis prüfen.
+TheSansB: Lizenz über Zahlenmerkspiel vorhanden, WOFF2 lokal, nicht ins öffentliche Repo.
+Adobe-Stock-Standardlizenz für Ausstellungsdisplay voraussichtlich ausreichend – gegenprüfen. Ebenfalls nicht ins öffentliche Repo.
+10. Zielgruppe & Rahmen
+Zielgruppe: Göttinger Bürger:innen mit Wissenschaftsinteresse, Studierende, Schüler:innen/Schulklassen ab 15.
+Freigabe: Slot-Machine-Idee von Forschenden, vom Kommunikations-Team-Lead abgesegnet. Influenza-Pivot aus dem Meeting mit dem Forschenden.
+Format: Hochkant, so nah wie möglich an echtem Slot-Automaten. Ziel fürs Exponat: möglichst kein Touchscreen (Hebel als Haupteingabe).
+Agentur (die das Zahlenmerkspiel baute) soll nur Case + Hebelmechanik bauen → Prototyp muss optisch schon nah am Endprodukt sein.
 11. Nächste Schritte
-CLAUDE.md anlegen lassen (Prompt siehe unten).
-Mutations-Mechanik (Abschnitt 3.4 + 4): zustandsabhängiger Hebel, max. 1–2 Mutationen pro Runde, Ergebnis wird neu bewertet. Prototyp so bauen, dass auch Variante „zweiter Knopf“ (z. B. Taste M) testbar ist.
-Attract-Modus + Auto-Reset (60 s Inaktivität), Hinweis „Zieh am Hebel!“ DE/EN.
-Feinschliff: Virendex, Slot-Automaten-Look, Credits/Fußleiste.
-Danach: Link an Forschende zur fachlichen Prüfung.
-Prompt für CLAUDE.md:
-Read docs/gameplan.md and create a CLAUDE.md in the project root with the standing rules for this project: plain HTML/CSS/JS without build tools, offline only (no CDNs, external fonts or APIs), all texts DE/EN in content.json, portrait 1080x1920 scaled to fit, input abstraction via one "spin" action (click/space = lever), never commit licensed files (TheSansB fonts, Adobe Stock, DPZ media), docs/gameplan.md is the concept reference. Keep it short.
+Alten Stand sichern (Git-Tag v0.1-zoonose / Branch).
+Diesen Gameplan in docs/gameplan.md einsetzen, Claude Code Bescheid geben.
+Spiellogik ersetzen – step by step:
+Drei Ausgangsviren + Schwein-Layout (statisch) aufbauen.
+Reassortment-Animation: 8 farbige Segmente mischen.
+Vier Ergebniskacheln mit Logik an die Mischung koppeln (Vorimmunität abgesetzt).
+Ergebnisscreen auf neue Inhalte umstellen.
+content.json auf Influenza-Inhalte (DE/EN) umbauen.
+Attract-Modus + Auto-Reset auf neues Konzept anpassen.
+Danach: Link an Forschende zur fachlichen Prüfung → offene Entscheidungen aus Abschnitt 4 klären.
