@@ -1,0 +1,29 @@
+# Public repo – never commit licensed material (see CLAUDE.md).
+# Keep these files locally; the app falls back to system fonts / placeholders without them.
+
+# House font TheSansB (licensed) – css/style.css loads it from fonts/ if present
+fonts/TheSansB*
+fonts/**/TheSansB*
+*.otf
+*.ttf
+*.woff
+*.woff2
+!fonts/free/**
+
+# Adobe Stock assets (default file names and a dedicated folder)
+AdobeStock_*
+**/AdobeStock_*
+assets/stock/
+
+# DPZ media database and unpublished DPZ material
+assets/dpz-media/
+assets/licensed/
+assets/private/
+
+# macOS / editor
+.DS_Store
+.vscode/
+*.swp
+
+# Local test pages and scratch files
+_test*.html
